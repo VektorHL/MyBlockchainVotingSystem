@@ -196,6 +196,50 @@ def vote():
     return jsonify(response), 200
 
 
+@app.route('/vote/yes', methods=['GET'])
+def vote_yes():
+    last_block = blockchain.last_block
+
+    vote = "yes"
+
+    previous_hash = blockchain.hash(last_block)
+    block = blockchain.new_block(0, previous_hash, vote)
+
+    proofed = blockchain.proof_of_work(block)
+    blockchain.chain.append(proofed)
+
+    response = {
+        'message': "New Block Forged",
+        'index': proofed['index'],
+        'proof': proofed['proof'],
+        'previous_hash': proofed['previous_hash'],
+        'vote': proofed['vote'],
+    }
+    return jsonify(response), 200
+
+
+@app.route('/vote/no', methods=['GET'])
+def vote_yes():
+    last_block = blockchain.last_block
+
+    vote = "no"
+
+    previous_hash = blockchain.hash(last_block)
+    block = blockchain.new_block(0, previous_hash, vote)
+
+    proofed = blockchain.proof_of_work(block)
+    blockchain.chain.append(proofed)
+
+    response = {
+        'message': "New Block Forged",
+        'index': proofed['index'],
+        'proof': proofed['proof'],
+        'previous_hash': proofed['previous_hash'],
+        'vote': proofed['vote'],
+    }
+    return jsonify(response), 200
+
+
 # @app.route('/transactions/new', methods=['POST'])
 # def new_transaction():
 #     #values = request.get_json()
