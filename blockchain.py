@@ -1,5 +1,6 @@
 import hashlib
 import json
+import random
 from time import time
 from urllib.parse import urlparse
 from uuid import uuid4
@@ -238,6 +239,18 @@ def vote_no():
         'vote': proofed['vote'],
     }
     return jsonify(response), 200
+
+
+@app.route('/vote/randomize', methods=['GET'])
+def vote_rand():
+    yes = random.randrange(5)
+    no = random.randrange(5)
+    for _ in range(no):
+        vote_no()
+    for _ in range(yes):
+        vote_yes()
+    response = f'Added {yes} positive and {no} votes'
+    return response, 200
 
 
 @app.route('/chain', methods=['GET'])
