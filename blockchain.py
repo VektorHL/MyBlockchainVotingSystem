@@ -219,7 +219,7 @@ def vote_yes():
 
 
 @app.route('/vote/no', methods=['GET'])
-def vote_yes():
+def vote_no():
     last_block = blockchain.last_block
 
     vote = "no"
