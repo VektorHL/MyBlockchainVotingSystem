@@ -16,7 +16,7 @@ class Blockchain:
         self.data = ["Голосуем за внесение поправок в конституцию. Да или нет?"]
 
         # Create the genesis block
-        genesis = self.new_block(previous_hash='1', proof=100, vote=question)
+        genesis = self.new_block(previous_hash='1', proof=100, my_vote=question)
         self.chain = [genesis]
 
     def register_node(self, address):
@@ -79,14 +79,14 @@ class Blockchain:
 
         return False
 
-    def new_block(self, proof, previous_hash, vote):
+    def new_block(self, proof, previous_hash, my_vote):
         block = {
             'index': len(self.chain) + 1,
             'timestamp': time(),
             #'transactions': self.current_transactions,
             'proof': proof,
             'previous_hash': previous_hash or self.hash(self.chain[-1]),
-            'vote': vote,
+            'vote': my_vote,
         }
 
         # Reset the current list of transactions
@@ -102,15 +102,15 @@ class Blockchain:
     #
     #     return self.last_block['index'] + 1
 
-    def new_vote(self, sender, recipient, amount, vote):
-        self.current_transactions.append({
-            'sender': sender,
-            'recipient': recipient,
-            'amount': amount,
-            'vote': vote,
-        })
-
-        return self.last_block['index'] + 1
+    # def new_vote(self, sender, recipient, amount, my_vote):
+    #     self.current_transactions.append({
+    #         'sender': sender,
+    #         'recipient': recipient,
+    #         'amount': amount,
+    #         'vote': my_vote,
+    #     })
+    #
+    #     return self.last_block['index'] + 1
 
     @property
     def last_block(self):
@@ -152,7 +152,7 @@ def mine():
     # )
 
     previous_hash = blockchain.hash(last_block)
-    block = blockchain.new_block(0, previous_hash)
+    block = blockchain.new_block(0, previous_hash, "yes?")
 
     proofed = blockchain.proof_of_work(block)
     blockchain.chain.append(proofed)
@@ -177,10 +177,10 @@ def vote():
     #     amount=1,
     #     vote="yes",
     # )
-    vote = "yes"
+    #test_vote = "yes"
 
     previous_hash = blockchain.hash(last_block)
-    block = blockchain.new_block(0, previous_hash, vote)
+    block = blockchain.new_block(0, previous_hash, "test_vote")
 
     proofed = blockchain.proof_of_work(block)
     blockchain.chain.append(proofed)
@@ -240,38 +240,6 @@ def vote_no():
     return jsonify(response), 200
 
 
-# @app.route('/transactions/new', methods=['POST'])
-# def new_transaction():
-#     #values = request.get_json()
-#     values = request.form
-#     #values = request.form.get('sender', 'recipient', 'amount')
-#     #values = request.values
-#     #values = request.data
-#     #values = request.json
-#
-#     print(type(values))
-#     print(jsonify(values))
-#
-#     if values != None:
-#         print(type(values))
-#         print(jsonify(values))
-#         return jsonify(values), 201
-#         #return type(values), 201
-#     # else:
-#     #     return jsonify(values), 201
-#     print(type(values))
-#     print(jsonify(values))
-#
-#     required = ['sender', 'recipient', 'amount']
-#     if not all(k in values for k in required):
-#         return 'Missing values', 400
-#
-#     index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'])
-#
-#     response = {'message': f'Transaction will be added to Block {index}'}
-#     return jsonify(response), 201
-
-
 @app.route('/chain', methods=['GET'])
 def full_chain():
     response = {
@@ -279,6 +247,21 @@ def full_chain():
         'length': len(blockchain.chain),
     }
     return jsonify(response), 200
+
+
+@app.route('/results', methods=['GET'])
+def show_results():
+    yes_count = no_count = 0
+    for i in range(len(blockchain.chain)):
+        if blockchain.chain[i]['vote'] == "yes":
+            yes_count += 1
+        elif blockchain.chain[i]['vote'] == "no":
+            no_count += 1
+    browser_new_line = "<br>"
+    votes = f"Voted for: {yes_count}{browser_new_line}Voted against: {no_count}"
+    # votes_no = f"Voted for: {yes_count} Voted against: {no_count}"
+
+    return votes, 200
 
 
 @app.route('/nodes/register', methods=['POST'])
