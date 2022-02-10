@@ -164,6 +164,7 @@ def mine():
         #'transactions': proofed['transactions'],
         'proof': proofed['proof'],
         'previous_hash': proofed['previous_hash'],
+        'vote': proofed['vote'],
     }
     return jsonify(response), 200
 
@@ -210,7 +211,7 @@ def vote_yes():
     blockchain.chain.append(proofed)
 
     response = {
-        'message': "New Block Forged",
+        #'message': "New Block Forged",
         'index': proofed['index'],
         'proof': proofed['proof'],
         'previous_hash': proofed['previous_hash'],
@@ -232,7 +233,7 @@ def vote_no():
     blockchain.chain.append(proofed)
 
     response = {
-        'message': "New Block Forged",
+        #'message': "New Block Forged",
         'index': proofed['index'],
         'proof': proofed['proof'],
         'previous_hash': proofed['previous_hash'],

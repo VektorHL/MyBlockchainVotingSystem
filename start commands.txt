@@ -1,0 +1,11 @@
+cd C:\Users\IVAN\Documents\GitHub\MyBlockchainVotingSystem\
+pipenv run python blockchain.py --port 5000
+
+
+{
+    "nodes": [
+        "localhost:5001"
+    ]
+}
+
+
