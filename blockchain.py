@@ -142,6 +142,10 @@ vote_question = "Голосуем за внесение поправок в ко
 blockchain = Blockchain(vote_question)
 
 
+@app.route('/')
+def index():
+    return blockchain.chain[0]['vote']
+
 @app.route('/mine', methods=['GET'])
 def mine():
     last_block = blockchain.last_block
