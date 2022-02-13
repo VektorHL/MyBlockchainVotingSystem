@@ -11,10 +11,10 @@ from flask import Flask, jsonify, request
 
 class Blockchain:
     def __init__(self, question):
-        self.current_transactions = []
+        #self.current_transactions = []
         self.chain = []
         self.nodes = set()
-        self.data = ["Голосуем за внесение поправок в конституцию. Да или нет?"]
+        #self.data = ["Голосуем за внесение поправок в конституцию. Да или нет?"]
 
         # Create the genesis block
         genesis = self.new_block(previous_hash='1', proof=100, my_vote=question)
@@ -140,6 +140,7 @@ node_identifier = str(uuid4()).replace('-', '')
 vote_question = "Голосуем за внесение поправок в конституцию. Да или нет?"
 
 blockchain = Blockchain(vote_question)
+print(blockchain.chain[0])
 
 
 @app.route('/')
@@ -316,6 +317,14 @@ def consensus():
         }
 
     return jsonify(response), 200
+
+
+@app.route('/nodes', methods=['GET'])
+def consensusasd():
+    print(blockchain.nodes)
+
+
+    return jsonify(list(blockchain.nodes)), 200
 
 
 @app.route('/ping', methods=['GET'])
