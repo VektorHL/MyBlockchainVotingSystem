@@ -287,7 +287,7 @@ def show_results():
 def register_nodes():
     values = request.get_json()
 
-    nodes = values.get('nodes')
+    nodes = values[1]
     if nodes is None:
         return "Error: Please supply a valid list of nodes", 400
 
