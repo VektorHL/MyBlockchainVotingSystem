@@ -255,7 +255,7 @@ def vote_rand():
         vote_no()
     for _ in range(yes):
         vote_yes()
-    response = f'Added {yes} positive and {no} votes'
+    response = f'Added {yes} positive and {no} negative votes'
     return response, 200
 
 
@@ -285,9 +285,11 @@ def show_results():
 
 @app.route('/nodes/register', methods=['POST'])
 def register_nodes():
-    values = request.get_json()
+    values = request.get_json(force=True, silent=True, cache=False)
+    print(values)
 
-    nodes = values[1]
+    nodes = values.get("nodes")
+    print(nodes)
     if nodes is None:
         return "Error: Please supply a valid list of nodes", 400
 

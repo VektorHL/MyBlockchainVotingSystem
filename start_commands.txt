@@ -1,21 +1,25 @@
-pip install pipenv
-pip install Flask==0.12.2 requests==2.18.4
+# обязательно,
+- pip install pipenv - НЕ АКТУАЛЬНО
+pip install flask==0.12.2 requests==2.18.4
 
-pipenv --python=python3.6
-pipenv install Flask==0.12.2 requests==2.18.4
-pipenv install
+- pipenv --python=python3.6 - НЕ АКТУАЛЬНО
+- pipenv install flask==0.12.2 requests==2.18.4 - НЕ АКТУАЛЬНО
+- pipenv install - НЕ АКТУАЛЬНО
 
 
 # путь до конря проекта
 cd C:\Users\Abrakadabra\Documents\GitHub\MyBlockchainVotingSystem\
-# у меня несколько версий питона. если ставить только 3.6, в теории должна работать и вторая, а так у меня только первая
-pipenv run py -3.6 blockchain.py --port 5000     
-pipenv run python blockchain.py --port 5000
+
+# запуск блокчейна
+py -3.6 blockchain.py --port 5000
+
 
 
 {
     "nodes": [
-        "localhost:5001"
+	"localhost:5000",
+        "localhost:5001",
+	"localhost:5002"
     ]
 }
 
